@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { Button, Card, Container, FormControl, InputGroup, Row } from 'react-bootstrap';
 import './App.css';
 
-const CLIENT_ID = 'c41c14c8779b40f98c4f0216326e551c'; // Ensure using REACT_APP prefix for React
-const CLIENT_SECRET = '763016986b1b4433933f41a82f9fb200'; // Ensure using REACT_APP prefix for React
+const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
+const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 
 function App() {
   const [searchInput, setSearchInput] = useState("");
