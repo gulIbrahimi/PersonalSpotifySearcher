@@ -1,11 +1,15 @@
+// Author: @gulIbrahimi
+// Date: 15/01/2025
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
 import { Button, Card, Container, FormControl, InputGroup, Row } from 'react-bootstrap';
 import './App.css';
 
+// Spotify API credentials
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 
+// App Component
 function App() {
   const [searchInput, setSearchInput] = useState("");
   const [accessToken, setAccessToken] = useState("");

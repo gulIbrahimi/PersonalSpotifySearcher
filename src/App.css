@@ -1,38 +1,159 @@
+/* === Styling === */
+/* === Author: @gulibrahimi === */
+
+/* === Body === */
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif; /* Clean, modern font for elegance */
+  background: linear-gradient(135deg, #ffe4e1, #fce1f3); /* Soft pastel gradient */
+  color: #333;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* === Main App Styling === */
 .App {
+  text-align: center;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* === Search Bar Styling === */
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 3rem;
+  width: 100%;
+}
+
+.search-bar {
+  display: flex;
+  border-radius: 50px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+  overflow: hidden;
+  max-width: 600px;
+  width: 80%;
+  background: white;
+  border: 2px solid #ffb6c1;
+}
+
+/* === Input Field Styling === */
+.search-input {
+  flex: 1;
+  border: none;
+  padding: 14px 20px;
+  font-size: 1.2rem;
+  border-radius: 50px 0 0 50px;
+  outline: none;
+  color: #333;
+}
+
+/* === Search Button Styling === */
+.search-button {
+  padding: 14px 24px;
+  background: #ff85a2;
+  border: none;
+  border-radius: 0 50px 50px 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+/* === Search Button Hover Effect === */
+.search-button:hover {
+  background: #ff5e78;
+  box-shadow: 0 0 15px rgba(255, 94, 120, 0.6);
+  transform: scale(1.05);
+}
+
+/* === Album Card Grid Styling === */
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  justify-items: center;
+}
+
+/* === Album Card Styling === */
+.card {
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  margin: 20px;
+  background: white;
+}
+
+/* === Album Card Hover Effect === */
+.card:hover {
+  transform: scale(1.05);
+}
+
+/* === Album Card Image Styling === */
+.card img {
+  border-radius: 20px 20px 0 0;
+}
+
+/* === Album Card Content Styling === */
+.card-title {
+  color: #ff69b4;
+  font-weight: bold;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* === Button and Interactive Effects === */
+button {
+  transition: all 0.3s ease;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* === Button Hover Effect === */
+button:hover {
+  opacity: 0.9;
+}
+
+/* === No Results Message Styling === */
+.no-results {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ff5e78;
+  margin-top: 2rem;
+}
+
+/* === Footer Styling === */
+footer {
+  margin-top: 3rem;
+  padding: 1rem;
+  font-size: 1rem;
+  text-align: center;
+  color: #777;
+}
+
+/* === Responsive Design Adjustments === */
+@media (max-width: 768px) {
+  .search-bar {
+      flex-direction: row;
+      width: 90%;
+  }
+
+/* === Album Card Grid Styling === */
+  .album-grid {
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+/* === Album Card Styling === */
+  .album-card {
+      max-width: 200px;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+/* === The End === */
