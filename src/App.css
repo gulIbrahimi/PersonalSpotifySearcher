@@ -6,153 +6,91 @@ body, html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif; /* Clean, modern font for elegance */
-  background: linear-gradient(135deg, #ffe4e1, #fce1f3); /* Soft pastel gradient */
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ffe4e1, #fce1f3);
   color: #333;
   overflow-x: hidden;
   min-height: 100vh;
 }
 
-/* === Main App Styling === */
+/* === App Container Styling === */
 .App {
   text-align: center;
   padding: 4rem 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
-/* === Search Bar Styling === */
-.search-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 3rem;
-  width: 100%;
-}
-
-.search-bar {
-  display: flex;
-  border-radius: 50px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
-  overflow: hidden;
+/* === Bootstrap Overrides for Input Group === */
+.input-group {
   max-width: 600px;
-  width: 80%;
-  background: white;
-  border: 2px solid #ffb6c1;
+  margin: 0 auto 3rem;
 }
 
-/* === Input Field Styling === */
-.search-input {
-  flex: 1;
-  border: none;
+.input-group .form-control {
+  border-radius: 50px 0 0 50px;
   padding: 14px 20px;
   font-size: 1.2rem;
-  border-radius: 50px 0 0 50px;
-  outline: none;
-  color: #333;
 }
 
-/* === Search Button Styling === */
-.search-button {
-  padding: 14px 24px;
-  background: #ff85a2;
-  border: none;
+.input-group .btn {
   border-radius: 0 50px 50px 0;
+  background: #ff85a2;
+  color: white;
   font-size: 1.2rem;
   font-weight: bold;
-  color: white;
-  cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
 
-/* === Search Button Hover Effect === */
-.search-button:hover {
+.input-group .btn:hover {
   background: #ff5e78;
-  box-shadow: 0 0 15px rgba(255, 94, 120, 0.6);
-  transform: scale(1.05);
 }
 
-/* === Album Card Grid Styling === */
-.album-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: auto;
-  justify-items: center;
-}
-
-/* === Album Card Styling === */
+/* === Bootstrap Card Styling === */
 .card {
   border-radius: 20px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   transition: transform 0.2s ease;
   margin: 20px;
-  background: white;
 }
 
-/* === Album Card Hover Effect === */
 .card:hover {
   transform: scale(1.05);
 }
 
-/* === Album Card Image Styling === */
 .card img {
   border-radius: 20px 20px 0 0;
 }
 
-/* === Album Card Content Styling === */
 .card-title {
   color: #ff69b4;
   font-weight: bold;
   text-align: center;
 }
 
-/* === Button and Interactive Effects === */
-button {
+/* === List Group Styling for Tracks === */
+.list-group-item {
+  padding: 15px 20px;
+  margin: 10px 0;
+  border-radius: 15px;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
-/* === Button Hover Effect === */
-button:hover {
-  opacity: 0.9;
+.list-group-item:hover {
+  transform: scale(1.05);
+  background: #fff5f8;
 }
 
-/* === No Results Message Styling === */
-.no-results {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #ff5e78;
-  margin-top: 2rem;
-}
-
-/* === Footer Styling === */
-footer {
-  margin-top: 3rem;
-  padding: 1rem;
-  font-size: 1rem;
-  text-align: center;
-  color: #777;
-}
-
-/* === Responsive Design Adjustments === */
+/* === Responsive Adjustments === */
 @media (max-width: 768px) {
-  .search-bar {
-      flex-direction: row;
-      width: 90%;
+  .row-cols-4 > * {
+    flex: 0 0 50%;
+    max-width: 50%;
   }
 
-/* === Album Card Grid Styling === */
-  .album-grid {
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  }
-/* === Album Card Styling === */
-  .album-card {
-      max-width: 200px;
+  .input-group {
+    width: 90%;
   }
 }
 

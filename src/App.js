@@ -1,28 +1,28 @@
-// Author: @gulIbrahimi
-// Date: 15/01/2025
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
-import { Button, Card, Container, FormControl, InputGroup, Row } from 'react-bootstrap';
+import { Button, Card, Container, FormControl, InputGroup, ListGroup, Row } from 'react-bootstrap';
 import './App.css';
 
-// Spotify API credentials
+// Author: @gulIbrahimi
+// Spotify API credentials retrieved from environment variables
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 
-// App Component
 function App() {
+  // Hooks for managing input, tokens, albums, selected album, and tracks
   const [searchInput, setSearchInput] = useState("");
   const [accessToken, setAccessToken] = useState("");
-  const [artistID, setArtistID] = useState("");
-  const [albums, setAlbums] = useState([]); // Added albums state
+  const [albums, setAlbums] = useState([]);
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
+  const [tracks, setTracks] = useState([]);
 
+  // Fetch Spotify access token on component mount
   useEffect(() => {
     if (!CLIENT_ID || !CLIENT_SECRET) {
       console.error("Missing CLIENT_ID or CLIENT_SECRET in environment variables.");
       return;
     }
 
-    // API access token
     const authParameters = {
       method: 'POST',
       headers: {
@@ -33,75 +33,84 @@ function App() {
 
     fetch(`https://accounts.spotify.com/api/token`, authParameters)
       .then(result => result.json())
-      .then(data => {
-        setAccessToken(data.access_token);
-        console.log("Access Token:", data.access_token);
-      })
-      .catch(error => console.error("Error fetching access token:", error));
+      .then(data => setAccessToken(data.access_token))
+      .catch(error => console.error("Error fetching token:", error));
   }, []);
 
+  // Function to search for artists and their albums
   async function search() {
-    console.log("Search for:", searchInput);
-
     if (!accessToken) {
       console.error("Access token is missing or invalid.");
       return;
     }
 
-    try {
-      // Get request using search to get the artist's ID
-      const searchParameters = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
-        },
-      };
+    const searchParameters = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    };
 
-      // Get request with search input to grab the artist ID
+    try {
+      // Fetch artist data based on search input
       const artistResponse = await fetch(
         `https://api.spotify.com/v1/search?q=${encodeURIComponent(searchInput)}&type=artist`,
         searchParameters
       );
       const artistData = await artistResponse.json();
 
-      // Check if artist exists in the search results collection
+      // Handle case when no artist is found
       if (!artistData.artists || artistData.artists.items.length === 0) {
         console.log("No artist found.");
         return;
       }
 
-      // Get the first artist's ID from the search results collection
+      // Extract the first matching artist ID
       const artistID = artistData.artists.items[0].id;
-      console.log("Artist ID:", artistID);
-      setArtistID(artistID);
 
-      // Get request with artist ID to grab all the albums of the artist
+      // Fetch albums for the found artist
       const albumsResponse = await fetch(
-        `https://api.spotify.com/v1/artists/${artistID}/albums?include_groups=album&market=US&limit=50`,
+        `https://api.spotify.com/v1/artists/${artistID}/albums?include_groups=album&market=US`,
         searchParameters
       );
       const albumsData = await albumsResponse.json();
 
-      // Check if albums exist in the search results collection
-      if (!albumsData.items || albumsData.items.length === 0) {
-        console.log("No albums found for this artist.");
-        return;
-      }
-
-      // Set the albums state with the search results collection
-      setAlbums(albumsData.items);
-      
-      // catch error if any of the albums is not found in the search results collection
+      setAlbums(albumsData.items); // Store albums in state
     } catch (error) {
       console.error("Error during search:", error);
     }
   }
 
+  // Function to fetch and display tracks for a selected album
+  async function fetchAlbumTracks(albumID) {
+    const trackParameters = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    };
+
+    try {
+      const tracksResponse = await fetch(
+        `https://api.spotify.com/v1/albums/${albumID}/tracks`,
+        trackParameters
+      );
+      const tracksData = await tracksResponse.json();
+
+      setTracks(tracksData.items); // Store tracks in state
+      setSelectedAlbum(albumID); // Set the selected album for display
+    } catch (error) {
+      console.error("Error fetching tracks:", error);
+    }
+  }
+
   return (
     <div className="App">
+      {/* Search bar input and button */}
       <Container>
-        <InputGroup className="mb-3" size="lg">
+        <InputGroup className="mb-3">
           <FormControl
             placeholder="Search for artists"
             type="input"
@@ -112,25 +121,40 @@ function App() {
             }}
             onChange={event => setSearchInput(event.target.value)}
           />
-          <Button onClick={search}>
-            Search
-          </Button>
+          <Button onClick={search}>Search</Button>
         </InputGroup>
       </Container>
-      <Container>
-        <Row className="mx-2 row row-cols-4">
-          {albums.map(album => (
-            <Card key={album.id}>
-              <Card.Img src={album.images[0]?.url || "default-placeholder.png"} />
-              <Card.Body>
-                <Card.Title>{album.name}</Card.Title>
-              </Card.Body>
-            </Card>
-          ))}
-        </Row>
-      </Container>
+
+      {/* Conditional rendering to show either tracks or albums */}
+      {selectedAlbum ? (
+        <Container>
+          <Button onClick={() => setSelectedAlbum(null)}>Back to Albums</Button>
+          {/* Display list of tracks */}
+          <ListGroup>
+            {tracks.map(track => (
+              <ListGroup.Item key={track.id}>{track.name}</ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Container>
+      ) : (
+        <Container>
+          <Row className="mx-2 row row-cols-4">
+            {/* Display album cards that are clickable */}
+            {albums.map(album => (
+              <Card key={album.id} onClick={() => fetchAlbumTracks(album.id)}>
+                <Card.Img src={album.images[0]?.url || 'default-placeholder.png'} />
+                <Card.Body>
+                  <Card.Title>{album.name}</Card.Title>
+                </Card.Body>
+              </Card>
+            ))}
+          </Row>
+        </Container>
+      )}
     </div>
   );
 }
 
 export default App;
+
+/* === The End === */
